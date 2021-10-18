@@ -4,7 +4,7 @@ import app.model.SignalerMembre;
 
 public class SignalerMembreDao extends DAO<SignalerMembre> {
     @Override
-    public SignalerMembre find(long id) {
+    public SignalerMembre findById(long id) {
         return null;
     }
 

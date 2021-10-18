@@ -35,7 +35,7 @@ public class OptionEnchereDao extends DAO<OptionEnchere>{
     }
 
     @Override
-    public OptionEnchere find(long id) {
+    public OptionEnchere findById(long id) {
         String query = "SELECT * FROM options WHERE option_id ="+id;
         try{
             PreparedStatement stmt= super.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);

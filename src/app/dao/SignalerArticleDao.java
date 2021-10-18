@@ -4,7 +4,7 @@ import app.model.SignalerArticle;
 
 public class SignalerArticleDao extends DAO<SignalerArticle> {
     @Override
-    public SignalerArticle find(long id) {
+    public SignalerArticle findById(long id) {
         return null;
     }
 

@@ -11,7 +11,7 @@ import java.sql.Statement;
 public class ArticleDao extends DAO<Article>{
 
     @Override
-    public Article find(long id) {
+    public Article findById(long id) {
         String query = "SELECT * FROM categorie WHERE article_id ="+id;
         try{
             PreparedStatement stmt= super.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);

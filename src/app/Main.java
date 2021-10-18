@@ -3,40 +3,54 @@ package app;
 import app.dao.*;
 import app.model.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.sql.Date;
-
 import java.util.ArrayList;
 
 public class Main {
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) {
+
+        // Inscription
+        Inscription();
+
+        // Connexion
+        //Connexion();
 
 
+        OptionEnchereDao optionEnchereDao = new OptionEnchereDao();
+        ArrayList<OptionEnchere> optionEncheres = optionEnchereDao.findAll();
+
+        System.out.println(optionEncheres);
+
+    }
+
+    public static void Inscription(){
         Compte compte = new Compte();
-        compte.setEmail("test@gmail.com");
-        compte.setMdp("www");
+        compte.setEmail("r.monlouis@gmail.com");
+        compte.setMdp("pwd");
         compte.setRole(Role.MEMBRE);
 
         CompteDao compteDao = new CompteDao();
-        Compte c=compteDao.create(compte);
+        if (!compteDao.find(compte.getEmail())) {
 
-        SimpleDateFormat sdf=new SimpleDateFormat("dd/mm/yyyy");
-        String daten="07/11/1997";
-        java.util.Date dateNais=sdf.parse(daten);
-        Membre membre=new Membre("HE","Peicong",new java.sql.Date(dateNais.getTime()),"ut1","31000","Toulouse","France",c);
+            compteDao.create(compte);
+            Membre membre = new Membre(compte);
+            membre.setNom("Monlouis");
+            membre.setPrenom("Ruddy");
+            membre.setDateNaissance(Date.valueOf("1997-08-05"));
+            membre.setCodePostal("31300");
+            membre.setAdressePostale("58 Avenue Etienne Billières");
+            membre.setVille("Toulouse");
+            membre.setPays("France");
+            MembreDao membreDao = new MembreDao();
+            membreDao.create(membre);
+        } else {
+            System.out.println("Le compte existe déja");
+        }
 
-        MembreDao membreDao=new MembreDao();
-        Membre m=membreDao.create(membre);
-
-        OptionEnchere optionEnchere=new OptionEnchere();
-        optionEnchere.setId(1);
-        optionEnchere.setLibelle("compteur_de_visites");
-        optionEnchere.setPrixCatalogue(0f);
-        optionEnchere.setPrixGold(0f);
-
-
+    }
+    
+    public static void creerArticle() {
         Article article=new Article();
         article.setTitre("apple TV");
         article.setDescription("c'est un apple tv");
@@ -50,14 +64,14 @@ public class Main {
         article.setRegionLivraison("Occitanie");
         article.setPrixAchatImmediat(750f);
 
-        CategorieDao categorieDao=new CategorieDao();
-       article.setCategorie(categorieDao.find(1));
+        /*CategorieDao categorieDao=new CategorieDao();
+        article.setCategorie(categorieDao.find(1));
         MembreDao membreDao1=new MembreDao();
         article.setVendeur(membreDao1.find(1));
         OptionEnchereDao optionEnchereDao=new OptionEnchereDao();
-        article.setOption(optionEnchereDao.find(1));
+        article.setOption(optionEnchereDao.find(1));*/
 
-//       ArrayList<Categorie> rs=new ArrayList<>();
+        //       ArrayList<Categorie> rs=new ArrayList<>();
 //       rs=categorieDao.findAllSousCategorie(1);
 //       for (int i=0;i<rs.size();i++){
 //           System.out.println(rs.get(i).getId());
@@ -67,9 +81,35 @@ public class Main {
 
         ArticleDao articleDao=new ArticleDao();
         articleDao.create(article);
+    }
 
+    public static void Connexion(){
 
+        String email = "r.monlouis@gmail.com";
+        String mdp = "pwd";
+        CompteDao compteDao = new CompteDao();
+        Compte compte = compteDao.find(email, mdp);
 
+        if (compte != null) {
+            switch (compte.getRole()) {
+                case MEMBRE :
+                    System.out.println("MEMBRE");
+                    break;
+                case SERVICE_COMMERCIAL:
+                    System.out.println("SERVICE_COMMERCIAL");
+                    break;
+                case SERVICE_JURIDIQUE:
+                    System.out.println("SERVICE_JURIDIQUE");
+                    break;
+                case GESTIONNAIRE:
+                    System.out.println("GESTIONNAIRE");
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            System.out.println("Utilisateur inconnue");
+        }
 
 
     }

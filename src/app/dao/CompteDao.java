@@ -10,9 +10,38 @@ import java.sql.Statement;
 
 public class CompteDao extends DAO<Compte>{
 
-    private final static String DELETE_COMPTE = "DELETE FROM compte WHERE compte_id = ?";
+    private static final String DELETE_BY_ID = "DELETE FROM compte WHERE compte_id = ?";
+    private static final String SELECT_ALL = "SELECT * FROM membre";
+    private static final String SELECT_BY_ID = "";
+    private static final String SELECT_BY_EMAIL = "";
+    private static final String SELECT_BY_EMAIL_PWD = "";
 
-    public Compte getCompte(String email, String mdp) {
+    private Compte getResultSet(ResultSet resultSet) throws SQLException {
+        Compte compte = null;
+        if (resultSet.next()) {
+            compte = new Compte();
+            compte.setId(resultSet.getLong("compte_id"));
+            compte.setEmail(resultSet.getString("compte_email"));
+            compte.setMdp(resultSet.getString("compte_mdp"));
+            compte.setRole(Role.valueOf(resultSet.getString("compte_role")));
+        }
+        return compte;
+    }
+
+    public boolean find(String email) {
+        String query = "SELECT compte_id FROM compte WHERE compte_email = ?";
+        try {
+            PreparedStatement preparedStatement = super.connection.prepareStatement(query);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public Compte find(String email, String mdp) {
         Compte compte = null;
         String query = "SELECT compte_id FROM compte WHERE compte_email = ? AND compte_mdp = ?";
         try {
@@ -20,7 +49,7 @@ public class CompteDao extends DAO<Compte>{
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, mdp);
             ResultSet resultSet = preparedStatement.executeQuery();
-            //id = resultSet.getLong("compte_id");
+            compte = getResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -28,24 +57,21 @@ public class CompteDao extends DAO<Compte>{
     }
 
     @Override
-    public Compte find(long id) {
-        String query="SELECT * FROM compte WHERE compte_id="+id;
-        try{
-            PreparedStatement stmt= super.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ResultSet rs=stmt.executeQuery();
-            while(rs.next()){
-                Compte compte = new Compte();
-                compte.setId(id);
-                compte.setEmail(rs.getString("compte_email"));
-                compte.setMdp(rs.getString("compte_mdp"));
-                Role role=Role.valueOf(rs.getString("compte_role"));
-                compte.setRole(role);
-                return compte;}
-        } catch (Exception e) {
+    public Compte findById(long id) {
+        Compte compte = null;
+        String query = "SELECT * FROM compte WHERE compte_id = ?";
+        try {
+            PreparedStatement preparedStatement = super.connection.prepareStatement(query);
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            compte = getResultSet(resultSet);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return compte;
     }
+
+
 
     @Override
     public Compte create(Compte compte) {
