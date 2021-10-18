@@ -1,17 +1,25 @@
 package app;
 
+import app.dao.CompteDao;
+import app.model.Compte;
+import app.model.Membre;
+import app.model.Role;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+
+        Compte compte = new Compte();
+        compte.setEmail("test@gmail.com");
+        compte.setMdp("www");
+        compte.setRole(Role.MEMBRE);
+
+        CompteDao compteDao = new CompteDao();
+        compteDao.create(compte);
 
 
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
     }
 }
