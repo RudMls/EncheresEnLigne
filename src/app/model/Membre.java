@@ -8,6 +8,7 @@ public class Membre {
     private String nom;
     private String prenom;
     private Date dateNaissance;
+    private String email;
     private String adressePostale;
     private String codePostal;
     private String ville;
@@ -15,6 +16,14 @@ public class Membre {
     private Compte compte;
 
     public Membre() {
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public long getId() {

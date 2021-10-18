@@ -2,6 +2,16 @@ package app.model;
 
 public class SignalerArticle {
 
+    private long id;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     private Article article;
     private String Commentaire;
 
