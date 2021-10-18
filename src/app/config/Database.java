@@ -7,7 +7,7 @@ public class Database {
 
     private static final String url = "jdbc:mysql://localhost:3306/encheres_en_ligne";
     private static final String login = "root";
-    private static final String password = "";
+    private static final String password = "0828cyn";
     private static Connection connection;
 
     public static Connection getConnection() {
