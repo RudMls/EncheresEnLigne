@@ -1,5 +1,6 @@
 package app.dao;
 
+import app.model.Compte;
 import app.model.Membre;
 
 import java.sql.PreparedStatement;
@@ -10,6 +11,18 @@ import java.sql.Statement;
 public class MembreDao extends DAO<Membre>{
     @Override
     public Membre find(long id) {
+        String query = "SELECT * FROM membre WHERE membre_id ="+id;
+        try{
+            PreparedStatement stmt= super.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs=stmt.executeQuery();
+            while(rs.next()){
+                CompteDao compteDao=new CompteDao();
+                Membre membre = new Membre(rs.getString("membre_nom"),rs.getString("membre_prenom"),rs.getDate("membre_date_naissance"),rs.getString("membre_email"),rs.getString("membre_adresse_postale"),rs.getString("membre_ville"),rs.getString("membre_pays"),compteDao.find(rs.getLong("compte_id")));
+                membre.setId(id);
+                return membre;}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

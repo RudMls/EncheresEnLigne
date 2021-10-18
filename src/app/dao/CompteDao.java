@@ -1,6 +1,7 @@
 package app.dao;
 
 import app.model.Compte;
+import app.model.Role;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,6 +29,21 @@ public class CompteDao extends DAO<Compte>{
 
     @Override
     public Compte find(long id) {
+        String query="SELECT * FROM compte WHERE compte_id="+id;
+        try{
+            PreparedStatement stmt= super.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs=stmt.executeQuery();
+            while(rs.next()){
+                Compte compte = new Compte();
+                compte.setId(id);
+                compte.setEmail(rs.getString("compte_email"));
+                compte.setMdp(rs.getString("compte_mdp"));
+                Role role=Role.valueOf(rs.getString("compte_role"));
+                compte.setRole(role);
+                return compte;}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

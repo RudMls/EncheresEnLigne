@@ -1,7 +1,9 @@
 package app.dao;
 
+import app.model.Categorie;
 import app.model.OptionEnchere;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -34,6 +36,20 @@ public class OptionEnchereDao extends DAO<OptionEnchere>{
 
     @Override
     public OptionEnchere find(long id) {
+        String query = "SELECT * FROM options WHERE option_id ="+id;
+        try{
+            PreparedStatement stmt= super.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ResultSet rs=stmt.executeQuery();
+            while(rs.next()){
+                OptionEnchere optionEnchere = new OptionEnchere();
+                optionEnchere.setId(id);
+                optionEnchere.setLibelle(rs.getString("option_libelle"));
+                optionEnchere.setPrixCatalogue(rs.getFloat("option_prix_catalogue"));
+                optionEnchere.setPrixGold(rs.getFloat("option_prix_gold"));
+                return optionEnchere;}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

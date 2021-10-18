@@ -14,7 +14,15 @@ public class Membre {
     private String pays;
     private Compte compte;
 
-    public Membre() {
+    public Membre(String nom, String prenom, Date dateNaissance, String adressePostale, String codePostal, String ville, String pays, Compte compte) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.dateNaissance = dateNaissance;
+        this.adressePostale = adressePostale;
+        this.codePostal = codePostal;
+        this.ville = ville;
+        this.pays = pays;
+        this.compte = compte;
     }
 
     public long getId() {

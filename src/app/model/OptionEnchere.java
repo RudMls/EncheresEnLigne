@@ -7,6 +7,13 @@ public class OptionEnchere {
     private float prixCatalogue;
     private float prixGold;
 
+//    public OptionEnchere(long id, String libelle, float prixCatalogue, float prixGold) {
+//        this.id = id;
+//        this.libelle = libelle;
+//        this.prixCatalogue = prixCatalogue;
+//        this.prixGold = prixGold;
+//    }
+
     public long getId() {
         return id;
     }
