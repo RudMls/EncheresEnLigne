@@ -5,7 +5,7 @@ import app.model.Vote;
 public class VoteDao extends DAO<Vote>{
 
     @Override
-    public Vote find(long id) {
+    public Vote findById(long id) {
         return null;
     }
 

@@ -8,7 +8,7 @@ public abstract class DAO<T> {
 
     public Connection connection = Database.getConnection();
 
-    public abstract T find(long id);
+    public abstract T findById(long id);
 
     public abstract T create(T obj);
 
