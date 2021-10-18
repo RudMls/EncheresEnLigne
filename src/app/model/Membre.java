@@ -1,10 +1,13 @@
 package app.model;
 
+import java.sql.Date;
+
 public class Membre {
 
+    private long id;
     private String nom;
     private String prenom;
-    private String dateNaissance;
+    private Date dateNaissance;
     private String adressePostale;
     private String codePostal;
     private String ville;
@@ -12,6 +15,14 @@ public class Membre {
     private Compte compte;
 
     public Membre() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Membre(Compte compte) {
@@ -34,11 +45,11 @@ public class Membre {
         this.prenom = prenom;
     }
 
-    public String getDateNaissance() {
+    public Date getDateNaissance() {
         return dateNaissance;
     }
 
-    public void setDateNaissance(String dateNaissance) {
+    public void setDateNaissance(Date dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 

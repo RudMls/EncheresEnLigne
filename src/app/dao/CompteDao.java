@@ -8,6 +8,24 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class CompteDao extends DAO<Compte>{
+
+    private final static String DELETE_COMPTE = "DELETE FROM compte WHERE compte_id = ?";
+
+    public Compte getCompte(String email, String mdp) {
+        Compte compte = null;
+        String query = "SELECT compte_id FROM compte WHERE compte_email = ? AND compte_mdp = ?";
+        try {
+            PreparedStatement preparedStatement = super.connection.prepareStatement(query);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, mdp);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            //id = resultSet.getLong("compte_id");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return compte;
+    }
+
     @Override
     public Compte find(long id) {
         return null;
@@ -24,8 +42,7 @@ public class CompteDao extends DAO<Compte>{
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
             if (rs.next()) {
-                long id = rs.getLong(1);
-                compte.setId(id);
+                compte.setId(rs.getLong(1));
             }
         } catch (SQLException e) {
             e.printStackTrace();
