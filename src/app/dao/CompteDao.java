@@ -2,7 +2,30 @@ package app.dao;
 
 import app.model.Compte;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class CompteDao extends DAO<Compte>{
+
+    private final static String DELETE_COMPTE = "DELETE FROM compte WHERE compte_id = ?";
+
+    public Compte getCompte(String email, String mdp) {
+        Compte compte = null;
+        String query = "SELECT compte_id FROM compte WHERE compte_email = ? AND compte_mdp = ?";
+        try {
+            PreparedStatement preparedStatement = super.connection.prepareStatement(query);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, mdp);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            //id = resultSet.getLong("compte_id");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return compte;
+    }
+
     @Override
     public Compte find(long id) {
         return null;
@@ -10,7 +33,21 @@ public class CompteDao extends DAO<Compte>{
 
     @Override
     public Compte create(Compte compte) {
-        return null;
+        String query = "INSERT INTO Compte (compte_email, compte_mdp, compte_role) VALUES(?, ?, ?)";
+        try {
+            PreparedStatement preparedStatement = super.connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, compte.getEmail());
+            preparedStatement.setString(2, compte.getMdp());
+            preparedStatement.setString(3, compte.getRole().toString());
+            preparedStatement.executeUpdate();
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            if (rs.next()) {
+                compte.setId(rs.getLong(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return compte;
     }
 
     @Override
